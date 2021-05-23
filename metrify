@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+require_relative 'metrics/collector'
+
+begin
+
+args = Hash[ ARGV.join(' ').scan(/-?([^=\s]+)(?:=(\S+))?/) ]
+
+metrics_collector = Metrics::Collector.new
+
+year = args['y'] || Time.new.year
+month = args['m'] || Time.new.month
+
+if month.to_i < 10
+  month = "0#{month.to_i}"
+end
+
+args['d'].split(',').each do |day|
+  if day.to_i < 10
+    day = "0#{day.to_i}"
+  end
+
+  file_name = File.dirname(__FILE__) + "/#{year}/#{month}/#{day}.md"
+
+  metrics_collector.add_file(file_name)
+end
+
+metrics_collector.freeze
+
+p metrics_collector.annotations
+
+rescue
+  puts 'x - ERROR ---------------------------------------------- x'
+  puts ''
+  puts '  Usage:'
+  puts ''
+  puts '  ./metryfy -d=1 -m=5 -y=2000'
+  puts ''
+  puts 'x ------------------------------------------------------ x'
+end

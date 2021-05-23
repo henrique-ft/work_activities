@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+require 'date'
+require 'fileutils'
+
+date = DateTime.now
+report_dir = ENV["REPORT_DIR"] || File.dirname(__FILE__)
+
+FileUtils.mkdir_p("#{report_dir}/#{date.strftime("%Y/%m")}")
+
+unless File.exist?("#{report_dir}/#{date.strftime("%Y/%m/%d")}.md")
+  File.open("#{report_dir}/#{date.strftime("%Y/%m/%d")}.md",'w+') do |f|
+    f.puts("# #{date.strftime("%d/%m/%Y")} - Henrique F. Teixeira\n\n")
+    f.puts("### Atividades:\n\n")
+    f.puts("- [ ]\n\n")
+    f.puts("---\n\n")
+    f.puts("### Reuniões:\n\n")
+    f.puts("---\n\n")
+    f.puts("### Anotações:\n\n")
+    f.puts("###### Anotações de Reunião:\n\n")
+    f.puts("---\n\n")
+    f.puts("### Interrupções:\n\n")
+    f.puts("---\n\n")
+    f.puts("### Dificuldades:\n\n")
+    f.puts("---\n\n")
+    f.puts("### Pomodoros:\n\n")
+    f.puts("0\n\n")
+    f.puts("---\n\n")
+    f.puts("### Ponto:\n\n")
+    f.puts("- \n\n")
+  end
+end
+
+system("cd #{report_dir}/ && vim #{date.strftime("%Y/%m/%d")}.md")
+
+exit
