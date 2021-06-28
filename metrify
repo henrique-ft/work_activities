@@ -2,39 +2,80 @@
 
 require_relative 'metrics/collector'
 
+FILE_NAME='metrics.md'
+TITLE='Henrique F. Teixeira'
+
 begin
+  args = Hash[ ARGV.join(' ').scan(/-?([^=\s]+)(?:=(\S+))?/) ]
 
-args = Hash[ ARGV.join(' ').scan(/-?([^=\s]+)(?:=(\S+))?/) ]
+  metrics_collector = Metrics::Collector.new
 
-metrics_collector = Metrics::Collector.new
+  year = args['y'] || Time.new.year
+  month = args['m'] || Time.new.month
 
-year = args['y'] || Time.new.year
-month = args['m'] || Time.new.month
-
-if month.to_i < 10
-  month = "0#{month.to_i}"
-end
-
-args['d'].split(',').each do |day|
-  if day.to_i < 10
-    day = "0#{day.to_i}"
+  if month.to_i < 10
+    month = "0#{month.to_i}"
   end
 
-  file_name = File.dirname(__FILE__) + "/#{year}/#{month}/#{day}.md"
+  args['d'].split(',').each do |day|
+    if day.to_i < 10
+      day = "0#{day.to_i}"
+    end
 
-  metrics_collector.add_file(file_name)
-end
+    file_name = File.dirname(__FILE__) + "/#{year}/#{month}/#{day}.md"
 
-metrics_collector.freeze
+    metrics_collector.add_file(file_name)
+  end
 
-p metrics_collector.annotations
+  metrics_collector.freeze
 
+  File.delete(FILE_NAME) if File.exists? FILE_NAME
+  File.open(FILE_NAME,'w+') do |f|
+    f.puts("# #{TITLE}\n\n")
+    f.puts("### Atividades:\n\n")
+    metrics_collector.tasks.each do |task|
+      if task != '[ ]'
+        f.puts("- #{task}\n\n")
+      end
+    end
+    f.puts("---\n\n")
+    f.puts("### Reuniões:\n\n")
+    metrics_collector.meetings.each do |meeting|
+      f.puts("- #{meeting}\n\n")
+    end
+    f.puts("---\n\n")
+    f.puts("### Anotações:\n\n")
+    metrics_collector.annotations.each do |annotation|
+      f.puts("- #{annotation.gsub('###', '')}")
+    end
+    f.puts("###### Anotações de Reunião:\n\n")
+    metrics_collector.meeting_annotations.each do |meeting_annotation|
+      f.puts("- #{meeting_annotation}\n\n")
+    end
+    f.puts("---\n\n")
+    f.puts("### Interrupções:\n\n")
+    metrics_collector.interruptions.each do |interruption|
+      f.puts("- #{interruption}\n\n")
+    end
+    f.puts("---\n\n")
+    f.puts("### Dificuldades:\n\n")
+    metrics_collector.difficulties.each do |difficulty|
+      f.puts("- #{difficulty}\n\n")
+    end
+    f.puts("---\n\n")
+    f.puts("### Pomodoros:\n\n")
+    f.puts(metrics_collector.pomodoros)
+  end
+
+  system("vim #{FILE_NAME}")
 rescue
-  puts 'x - ERROR ---------------------------------------------- x'
+  puts 'x - ERROR ------ x'
   puts ''
-  puts '  Usage:'
+  puts '  Usage examples:'
   puts ''
-  puts '  ./metryfy -d=1 -m=5 -y=2000'
+  puts '  ./metrify -d=1 -m=5 -y=2000 | get day 1 from month 5 and year 2000'
+  puts '  ./metrify -d=1,2,3          | get day 1, 2 and 3 from the current month and year'
+  puts '  ./metrify -d=1,2 -m=4       | get day 1 and 2 from month 4 and current year'
   puts ''
-  puts 'x ------------------------------------------------------ x'
+  puts 'x -------------- x'
 end

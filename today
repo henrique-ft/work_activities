@@ -3,6 +3,8 @@
 require 'date'
 require 'fileutils'
 
+TITLE='Henrique F. Teixeira'
+
 date = DateTime.now
 report_dir = ENV["REPORT_DIR"] || File.dirname(__FILE__)
 
@@ -10,7 +12,7 @@ FileUtils.mkdir_p("#{report_dir}/#{date.strftime("%Y/%m")}")
 
 unless File.exist?("#{report_dir}/#{date.strftime("%Y/%m/%d")}.md")
   File.open("#{report_dir}/#{date.strftime("%Y/%m/%d")}.md",'w+') do |f|
-    f.puts("# #{date.strftime("%d/%m/%Y")} - Henrique F. Teixeira\n\n")
+    f.puts("# #{date.strftime("%d/%m/%Y")} - #{TITLE}\n\n")
     f.puts("### Atividades:\n\n")
     f.puts("- [ ]\n\n")
     f.puts("---\n\n")

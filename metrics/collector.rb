@@ -112,7 +112,7 @@ module Metrics
     def clear_list(list)
       if list.kind_of?(Array)
         list
-          .map {|s| s.gsub("---", "")}
+          .map {|s| s.gsub("---", "") }
           .filter {|s| (s != "") && (s != "\n\n")}
           .map(&:strip)
       else
