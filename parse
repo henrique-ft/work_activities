@@ -1,36 +1,39 @@
 #!/usr/bin/env ruby
 
-require_relative 'metrics/collector'
+require_relative 'parser/engine'
 
-FILE_NAME='metrics.md'
-TITLE='Henrique F. Teixeira'
+PARSE_PATH = ENV["PARSE_PATH"] 'parsed.md'
+TITLE = ENV["TITLE"] || 'Henrique F. Teixeira'
+EDITOR = ENV["EDITOR"] || 'vim'
+REPORT_DIR = ENV["REPORT_DIR"] || File.dirname(__FILE__)
 
 begin
-  args = Hash[ ARGV.join(' ').scan(/-?([^=\s]+)(?:=(\S+))?/) ]
+  ARGS = Hash[ ARGV.join(' ').scan(/-?([^=\s]+)(?:=(\S+))?/) ]
 
-  metrics_collector = Metrics::Collector.new
+  metrics_collector = Parser::Engine.new
 
-  year = args['y'] || Time.new.year
-  month = args['m'] || Time.new.month
+  year = ARGS['y'] || Time.new.year
+  month = ARGS['m'] || Time.new.month
 
   if month.to_i < 10
     month = "0#{month.to_i}"
   end
 
-  args['d'].split(',').each do |day|
+  ARGS['d'].split(',').each do |day|
     if day.to_i < 10
       day = "0#{day.to_i}"
     end
 
-    file_name = File.dirname(__FILE__) + "/#{year}/#{month}/#{day}.md"
+    file_name = REPORT_DIR + "/#{year}/#{month}/#{day}.md"
 
     metrics_collector.add_file(file_name)
   end
 
   metrics_collector.freeze
 
-  File.delete(FILE_NAME) if File.exists? FILE_NAME
-  File.open(FILE_NAME,'w+') do |f|
+  File.delete(PARSE_PATH) if File.exists? PARSE_PATH
+
+  File.open(PARSE_PATH,'w+') do |f|
     f.puts("# #{TITLE}\n\n")
     f.puts("### Atividades:\n\n")
     metrics_collector.tasks.each do |task|
@@ -67,15 +70,15 @@ begin
     f.puts(metrics_collector.pomodoros)
   end
 
-  system("vim #{FILE_NAME}")
+  system("#{EDITOR} #{PARSE_PATH}")
 rescue
   puts 'x - ERROR ------ x'
   puts ''
   puts '  Usage examples:'
   puts ''
-  puts '  ./metrify -d=1 -m=5 -y=2000 | get day 1 from month 5 and year 2000'
-  puts '  ./metrify -d=1,2,3          | get day 1, 2 and 3 from the current month and year'
-  puts '  ./metrify -d=1,2 -m=4       | get day 1 and 2 from month 4 and current year'
+  puts '  ./parse -d=1 -m=5 -y=2000 | get day 1 from month 5 and year 2000'
+  puts '  ./parse -d=1,2,3          | get day 1, 2 and 3 from the current month and year'
+  puts '  ./parse -d=1,2 -m=4       | get day 1 and 2 from month 4 and current year'
   puts ''
   puts 'x -------------- x'
 end

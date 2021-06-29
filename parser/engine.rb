@@ -1,7 +1,7 @@
-require 'byebug'
+# frozen_string_literal: true
 
-module Metrics
-  class Collector
+module Parser
+  class Engine
     class ParsedFile
       attr_accessor :tasks,
         :annotations,

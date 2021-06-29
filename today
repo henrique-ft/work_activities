@@ -3,16 +3,16 @@
 require 'date'
 require 'fileutils'
 
-TITLE='Henrique F. Teixeira'
+DATE = ENV["DATE"] || DateTime.now
+TITLE = ENV["TITLE"] || 'Henrique F. Teixeira'
+EDITOR = ENV["EDITOR"] || 'vim'
+REPORT_DIR = ENV["REPORT_DIR"] || File.dirname(__FILE__)
 
-date = DateTime.now
-report_dir = ENV["REPORT_DIR"] || File.dirname(__FILE__)
+FileUtils.mkdir_p("#{REPORT_DIR}/#{DATE.strftime("%Y/%m")}")
 
-FileUtils.mkdir_p("#{report_dir}/#{date.strftime("%Y/%m")}")
-
-unless File.exist?("#{report_dir}/#{date.strftime("%Y/%m/%d")}.md")
-  File.open("#{report_dir}/#{date.strftime("%Y/%m/%d")}.md",'w+') do |f|
-    f.puts("# #{date.strftime("%d/%m/%Y")} - #{TITLE}\n\n")
+unless File.exist?("#{REPORT_DIR}/#{DATE.strftime("%Y/%m/%d")}.md")
+  File.open("#{REPORT_DIR}/#{DATE.strftime("%Y/%m/%d")}.md",'w+') do |f|
+    f.puts("# #{DATE.strftime("%d/%m/%Y")} - #{TITLE}\n\n")
     f.puts("### Atividades:\n\n")
     f.puts("- [ ]\n\n")
     f.puts("---\n\n")
@@ -33,6 +33,6 @@ unless File.exist?("#{report_dir}/#{date.strftime("%Y/%m/%d")}.md")
   end
 end
 
-system("cd #{report_dir}/ && vim #{date.strftime("%Y/%m/%d")}.md")
+system("cd #{REPORT_DIR}/ && #{EDITOR} #{DATE.strftime("%Y/%m/%d")}.md")
 
 exit
