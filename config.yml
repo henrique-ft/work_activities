@@ -1,0 +1,14 @@
+parsed_file_path: parsed.md
+title: your name
+editor: gedit
+report_file_template:
+  tasks:
+  meetings:
+  annotations:
+  meeting_annotations:
+  interruptions:
+  difficulties:
+  pomodoros:
+
+# leave empty to get the current dir
+report_dir:

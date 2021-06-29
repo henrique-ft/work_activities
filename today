@@ -1,12 +1,7 @@
 #!/usr/bin/env ruby
 
-require 'date'
 require 'fileutils'
-
-DATE = ENV["DATE"] || DateTime.now
-TITLE = ENV["TITLE"] || 'Henrique F. Teixeira'
-EDITOR = ENV["EDITOR"] || 'vim'
-REPORT_DIR = ENV["REPORT_DIR"] || File.dirname(__FILE__)
+require_relative 'constants'
 
 FileUtils.mkdir_p("#{REPORT_DIR}/#{DATE.strftime("%Y/%m")}")
 

@@ -1,11 +1,7 @@
 #!/usr/bin/env ruby
 
 require_relative 'parser/engine'
-
-PARSE_PATH = ENV["PARSE_PATH"] 'parsed.md'
-TITLE = ENV["TITLE"] || 'Henrique F. Teixeira'
-EDITOR = ENV["EDITOR"] || 'vim'
-REPORT_DIR = ENV["REPORT_DIR"] || File.dirname(__FILE__)
+require_relative 'constants'
 
 begin
   ARGS = Hash[ ARGV.join(' ').scan(/-?([^=\s]+)(?:=(\S+))?/) ]
@@ -31,9 +27,9 @@ begin
 
   metrics_collector.freeze
 
-  File.delete(PARSE_PATH) if File.exists? PARSE_PATH
+  File.delete(PARSED_FILE_PATH) if File.exists? PARSED_FILE_PATH
 
-  File.open(PARSE_PATH,'w+') do |f|
+  File.open(PARSED_FILE_PATH,'w+') do |f|
     f.puts("# #{TITLE}\n\n")
     f.puts("### Atividades:\n\n")
     metrics_collector.tasks.each do |task|
@@ -70,7 +66,7 @@ begin
     f.puts(metrics_collector.pomodoros)
   end
 
-  system("#{EDITOR} #{PARSE_PATH}")
+  system("#{EDITOR} #{PARSED_FILE_PATH}")
 rescue
   puts 'x - ERROR ------ x'
   puts ''
