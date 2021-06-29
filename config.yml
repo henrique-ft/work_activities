@@ -1,7 +1,7 @@
 parsed_file_path: parsed.md
 title: your name
 editor: gedit
-report_file_template:
+activities_file_template:
   tasks:
   meetings:
   annotations:
@@ -11,4 +11,4 @@ report_file_template:
   pomodoros:
 
 # leave empty to get the current dir
-report_dir:
+activities_dir:

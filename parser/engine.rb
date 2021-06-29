@@ -19,7 +19,7 @@ module Parser
     end
 
     def add_file(file)
-      raise "Metrics collector is frozen" if @frozen
+      raise "Parser::Engine is frozen" if @frozen
 
       file_data = File.read(file)
 
@@ -30,51 +30,51 @@ module Parser
     end
 
     def done_tasks
-      raise "Metrics collector is not frozen" unless @frozen
+      raise "Parser::Engine is not frozen" unless @frozen
 
       @done_tasks ||=
         tasks.filter { |t| t.start_with?("[x]") || t.start_with?("[X]") }
     end
 
     def tasks
-      raise "Metrics collector is not frozen" unless @frozen
+      raise "Parser::Engine is not frozen" unless @frozen
       @tasks ||= @parsed_files.map { |f| f.tasks }.flatten
     end
 
     def annotations
-      raise "Metrics collector is not frozen" unless @frozen
+      raise "Parser::Engine is not frozen" unless @frozen
       @annotations ||= @parsed_files.map { |f| f.annotations }.flatten
     end
 
     def meeting_annotations
-      raise "Metrics collector is not frozen" unless @frozen
+      raise "Parser::Engine is not frozen" unless @frozen
       @meeting_annotations ||= @parsed_files.map { |f| f.meeting_annotations }.flatten
     end
 
     def meetings
-      raise "Metrics collector is not frozen" unless @frozen
+      raise "Parser::Engine is not frozen" unless @frozen
       @meetings ||= @parsed_files.map { |f| f.meetings }.flatten
     end
 
     def interruptions
-      raise "Metrics collector is not frozen" unless @frozen
+      raise "Parser::Engine is not frozen" unless @frozen
       @interruptions ||= @parsed_files.map { |f| f.interruptions }.flatten
     end
 
     def difficulties
-      raise "Metrics collector is not frozen" unless @frozen
+      raise "Parser::Engine is not frozen" unless @frozen
       @difficulties ||= @parsed_files.map { |f| f.difficulties }.flatten
     end
 
     def pomodoros
-      raise "Metrics collector is not frozen" unless @frozen
+      raise "Parser::Engine is not frozen" unless @frozen
 
       @pomodoros ||=
         @parsed_files.reduce(0) { |sum, f| sum + f.pomodoros }
     end
 
     def point
-      raise "Metrics collector is not frozen" unless @frozen
+      raise "Parser::Engine is not frozen" unless @frozen
       @point ||= @parsed_files.map { |f| f.point }.flatten
     end
 

@@ -3,10 +3,10 @@
 require 'fileutils'
 require_relative 'constants'
 
-FileUtils.mkdir_p("#{REPORT_DIR}/#{DATE.strftime("%Y/%m")}")
+FileUtils.mkdir_p("#{ACTIVITIES_DIR}/#{DATE.strftime("%Y/%m")}")
 
-unless File.exist?("#{REPORT_DIR}/#{DATE.strftime("%Y/%m/%d")}.md")
-  File.open("#{REPORT_DIR}/#{DATE.strftime("%Y/%m/%d")}.md",'w+') do |f|
+unless File.exist?("#{ACTIVITIES_DIR}/#{DATE.strftime("%Y/%m/%d")}.md")
+  File.open("#{ACTIVITIES_DIR}/#{DATE.strftime("%Y/%m/%d")}.md",'w+') do |f|
     f.puts("# #{DATE.strftime("%d/%m/%Y")} - #{TITLE}\n\n")
     f.puts("### Atividades:\n\n")
     f.puts("- [ ]\n\n")
@@ -28,6 +28,6 @@ unless File.exist?("#{REPORT_DIR}/#{DATE.strftime("%Y/%m/%d")}.md")
   end
 end
 
-system("cd #{REPORT_DIR}/ && #{EDITOR} #{DATE.strftime("%Y/%m/%d")}.md")
+system("cd #{ACTIVITIES_DIR}/ && #{EDITOR} #{DATE.strftime("%Y/%m/%d")}.md")
 
 exit

@@ -20,7 +20,7 @@ begin
       day = "0#{day.to_i}"
     end
 
-    file_name = REPORT_DIR + "/#{year}/#{month}/#{day}.md"
+    file_name = ACTIVITIES_DIR + "/#{year}/#{month}/#{day}.md"
 
     metrics_collector.add_file(file_name)
   end
