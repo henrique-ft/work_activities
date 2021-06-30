@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require_relative 'parser/engine'
-require_relative 'constants'
+require_relative 'lib/parser/engine'
+require_relative 'lib/constants'
 
 begin
   ARGS = Hash[ ARGV.join(' ').scan(/-?([^=\s]+)(?:=(\S+))?/) ]

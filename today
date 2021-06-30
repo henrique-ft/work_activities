@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'fileutils'
-require_relative 'constants'
+require_relative 'lib/constants'
 
 FileUtils.mkdir_p("#{ACTIVITIES_DIR}/#{DATE.strftime("%Y/%m")}")
 
